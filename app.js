@@ -1,5 +1,3 @@
-
-
 let userName = document.getElementById("username");
 let userImage = document.getElementById("userimage");
 let batchNum = document.getElementById("batchno");
@@ -18,9 +16,21 @@ const postData = async(e) => {
         return ;
     }
 
+    var userData = {username: name, batchNo: batch};
+    var userdetail  = GetUserDetails(userData);
+    console.log(userdetail);
+    if(userdetail ==null || userdetail == undefined ){
+      // call post menthod to insert the data since the user don't exists
+      console.log('User does not Exists');
+    
+    }
+    else{
+      //chekc the statis of isLogin and call the put method to update the data.
+      console.log('user exists');
+    }
   
    try { 
-     
+     /*
         const response = await axios.request({
         method:"post",
         url: "https://peerup-web-dev-srv.herokuapp.com/parse/classes/pvbc_usr",
@@ -38,16 +48,19 @@ const postData = async(e) => {
         
       });
       // console.log("hi");
-      // console.log(response.data)
+
+      console.log(response.data)
+
       // if(response!=null)
       //   {
-      //       foreach(user in response.data.results{
-               if(user.userName === user.)
-      }
+      //       if(response.status==200)
+      //       {
+
+      //       }
 
       //   }
 
-         
+         */
       
    } 
  
@@ -57,7 +70,7 @@ const postData = async(e) => {
        
    } 
 
-   await getData();
+  
    userName.value=" ";
    userImage.value=" ";
    batchNum.value=" ";
@@ -66,23 +79,22 @@ const postData = async(e) => {
 
 
 
-const getData=async()=>{
-
-    const response = await axios.request({
-        method:"get",
-        url: "https://peerup-web-dev-srv.herokuapp.com/parse/classes/pvbc_usr",
-        headers : {
-                  "X-Parse-Application-Id": "MVV6avFp",
-                  "Content-Type": "application/json",
-                },
-        data:{} ,
-      });
-      
-
-      console.log(response.data)
- }
-
-
+async function GetUserDetails(userdata)
+{
+  
+  const response = await axios.request({
+    method:"get",
+    url: "https://peerup-web-dev-srv.herokuapp.com/parse/classes/pvbc_usr?where="+Json.stringify(userdata)+Json.stringify(batchNo),
+    headers : {
+              "X-Parse-Application-Id": "MVV6avFp",
+              "Content-Type": "application/json",
+            },
+    data:{} ,
+  });
+  
+  console.log(response.data);
+  return response.data;
+}
 
  function hide(e) {
   e.preventDefault();
@@ -128,7 +140,7 @@ const getData=async()=>{
 
 
 
-enterBtn.addEventListener('click',hide);
+enterBtn.addEventListener('click',postData);
 
 //  enterBtn.addEventListener("click",()=>{
 
